@@ -1,7 +1,6 @@
 package online.umbcraft.web;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -22,7 +21,11 @@ public class PlaintextKeyScraper extends KeyScraper {
                     InputStreamReader isr = new InputStreamReader(is);
                     BufferedReader reader = new BufferedReader(isr);
 
-                    String line = null;
+                    String line = reader.readLine();
+                    if(!line.equals("----------BEGIN KEYS----------")) {
+                        throw new MalformedURLException("Invalid Document at URL: " + targetURL);
+                    }
+
                     boolean matched = false;
                     while ((line = reader.readLine()) != null) {
 
@@ -38,9 +41,6 @@ public class PlaintextKeyScraper extends KeyScraper {
                     return matched;
                 }
         );
-
-//        throw new MalformedURLException("url is not in the form of " +
-//                "https://{site}/{path}/{to}/{file}.txt");
     }
 
     @Override
