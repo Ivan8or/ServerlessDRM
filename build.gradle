@@ -1,0 +1,44 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+
+repositories {
+    mavenLocal()
+    maven {
+        url = 'https://nexus.umbcraft.online/repository/umbcraft-pub/'
+    }
+    maven {
+        url = 'https://nexus.umbcraft.online/repository/proxies/'
+    }
+}
+
+dependencies {
+}
+
+final String basePackage = "online.umbcraft.libs"
+
+shadowJar {
+    relocate "org.bstats","${basePackage}.org.bstats"
+}
+
+group = 'online.umbcraft.libraries'
+version = '1.4.4'
+
+sourceCompatibility = '1.8'
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
+shadowJar {
+    archiveClassifier = ""
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
