@@ -13,6 +13,10 @@ public abstract class KeyScraper {
         executor = newExecutor;
     }
 
+    public static ExecutorService getExecutorService() {
+        return executor;
+    }
+
     public abstract Future<Boolean> containsKey(String targetURL, String base64hash) throws MalformedURLException;
 
 
