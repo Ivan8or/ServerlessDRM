@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class PlaintextKeyScraper extends KeyScraper {
+public class SetKeyScraper extends KeyScraper {
 
     @Override
     public Future<Boolean> containsKey(final String targetURL, final String key) {
@@ -28,13 +28,8 @@ public class PlaintextKeyScraper extends KeyScraper {
                         throw new MalformedURLException("Invalid Document at URL: " + targetURL);
                     }
                     boolean matched = false;
-                    List<String> allTokens = reader.lines().collect(Collectors.toList());
-                    for(String token: allTokens) {
-                        if(key.equals(token)) {
-                            matched = true;
-                            break;
-                        }
-                    }
+                    Set<String> allTokens = reader.lines().collect(Collectors.toSet());
+                    matched = allTokens.contains(key);
                     reader.close();
                     isr.close();
                     is.close();
