@@ -14,31 +14,33 @@ Reliant only on a public registrar to store encrypted keys (such as github), Ser
 must have a valid user token in order to pass validation.
 
 
-**How does it work?**
+# How does it work?
 
-ServerlessDRM relies on the modern hash algorithm SHA-512 to create a 'hashed' version
-of every client token that may be exposed to the outside world.
+ServerlessDRM relies on the modern hash algorithm SHA-512 to derive a 'hash', a unique attribute
+of a string (or any other form of data) which is safe to expose to the outside world.
 
-A 'hashed' token can never be reversed back into the original token, which means that even if a malicious
-actor has access to the hash, they will not be able to derive the original key from it.
+>*A hash cannot be reversed to extract the value it was built from, which means that even if a malicious
+actor has access to a token hash, they will not be able to derive the original key from it.*
 
-ServerlessDRM reads a text document hosted on any popular platform of the developers choice (like github) containing
-all valid hashed tokens, and after calculating the hash for the token the client supplies; compares the hash
-to the hashes in the text document.
+ServerlessDRM reads a text document hosted on any popular platform of your choice (like github), which contains
+a list of hashes of all valid user tokens.
+
+SDRM calculates the hash for the token the client supplies, and then compares the calculated hash to the hashes in the text document.
+
 If the newly produced hash matches any of the existing ones, the client has been proved to have a valid token
 and will be pass validation.
 
-ServerlessDRM performs all http requests and comparisons to verify the client token asynchronously, greatly
-reducing the performance implications on the client. 
+>*ServerlessDRM performs all http requests and comparisons to verify the client token asynchronously, greatly
+reducing the performance implications on the client.*
 
 
-**Performance**
+# Performance
 
-The document host used in these measurements was github.com
+The document host used in these measurements was `github.com`
 
 Measurements were taken on the following hardware:
- - a ryzen **5950x** processor (zen 3, rd. 2020) 
- - an intel **x5670** processor (Westmere, rd. 2010)
+ - a ryzen 5950x processor (Zen 3, released 2020) 
+ - an intel x5670 processor (Westmere, released 2010)
  
 Two algorithms were measured; Greedy and Streamed -
 
@@ -50,95 +52,66 @@ next hashed token to the specified token. This allows for an early escape if the
 the entire document has been read through. 
 
 
+
+## `ryzen 5950x` summary:
 **(values are in miliseconds; lower is better)**
-
-5950x (released 2020) summary:
-
- 1k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+```
+ 1k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       7        7          7
- 
  Streamed:     5        7          7
  
- 10k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 10k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       27       28         26
- 
  Streamed:     31       71         30
  
- 100k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 100k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       287      265        285
- 
  Streamed:     24       668        280
  
- 500k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 500k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       1172     1655       1332
- 
  Streamed:     22       1272       1607
  
- 1m entries:
- 
- hash at:     |top     |middle    |bottom
- 
+ 1m token entries:
+ entry at     |top     |middle    |bottom
  Greedy:       2829     2981       2733
- 
  Streamed:     25       2064       3229
+```
  
- 
+
+## `xeon x5670` summary:
 **(values are in miliseconds; lower is better)**
 
-x5670 (released 2010) summary:
-
- 1k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+```
+ 1k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       22       25         21
- 
  Streamed:     21       20         25
  
- 10k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 10k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       109      120        115
+ Streamed:     39       125        174
  
- Streamed:     217      125        174
- 
- 100k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 100k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       845      814        856
- 
  Streamed:     33       896        1048
  
- 500k entries: 
- 
- hash at:     |top     |middle    |bottom
- 
+ 500k token entries: 
+ entry at     |top     |middle    |bottom
  Greedy:       3820     4018       3846
- 
  Streamed:     37       2111       4167
  
- 1m entries:
- 
- hash at:     |top     |middle    |bottom
- 
+ 1m token entries:
+ entry at     |top     |middle    |bottom
  Greedy:       7687     7618       8493
- 
  Streamed:     37       3985       7613
- 
+ ```
 
 
 *note that the number of cores in a processor should not affect performance results
