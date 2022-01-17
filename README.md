@@ -5,14 +5,31 @@ Eager to ensure your software is limited to its intended users?
 
 Don't want to spend time and resources on running a dedicated verification server?
 
-Welcome to, Serverless DRM!
+Welcome, to Serverless DRM!
 
+ServerlessDRM allows developers to fully offload the heavy lifting of traditional DRM solutions to the client; reducing costs and improving performance at the same time!
 
-This library allows developers to fully offload the heavy lifting of traditional DRM solutions to the client! 
+# Features!
 
-Reliant only on a public document platform to store token hashes (such as github), ServerlessDRM will ensure that clients
-must have a valid user token in order to pass validation.
+> ServerlessDRM is accessible.
 
+ServerlessDRM has one of the lowest overheads of any DRM solution. **It does not require you to set up and host any sort of database or authentication server**, resulting in a very low barrier to entry for any software developers who wish to license their products. 
+
+> ServerlessDRM has the power of the entire public cloud behind it.
+
+Because SDRM references a text document that can be stored on any fitting public platform (github, etc.), it inherits the same redundancy and multimillion dollar infrastructure those platforms use. **Clients all across the world will be able to authenticate themselves with low latency and nearly no risk of downtime** because of these platforms' expansive networks of servers, outshining any self-hosted solution the developer on a budget can achieve.
+
+This also makes ServerlessDRM essentially immune to being oversaturated with requests, allowing for an unprecedented amount of concurrent user verifications that self-hosted DRM solutions can never reach. 
+
+> ServerlessDRM can be scaled to fit most needs.
+
+ServerlessDRM can support tens of thousands of active user tokens while maintaining an extremely low latency thanks to the wide net of the public cloud. Example performance measurements can be seen in a lower section, where SDRM shows **sub-second performance even with hundreds of thousands of user tokens.**
+
+*If at any point a developer encounters a situation where they find ServerlessDRM does not manage enough user tokens to meet their needs, they can ponder their next choice of DRM manager while taking a leisurely drive in their Ferrari.*
+
+> ServerlessDRM is more secure.
+
+While ALL DRM solutions are avoidable by an experienced developer with the product in hand, ServerlessDRM eliminates a massive (and the most critical) risk factor. With no central server to target, malicious actors will never be able to find exploits or bugs as is possible with any traditional DRM. Additionally, **DDOS attacks are not a concern for ServerlessDRM, unlike other DRM solutions** where even a moderately sized denial of service attack is a constant threat to the functionality of every product they support.
 
 # How does it work?
 
@@ -23,7 +40,7 @@ of a string (or any other form of data) which is safe to expose to the outside w
 actor has access to a token hash, they will not be able to derive the original key from it.*
 
 ServerlessDRM reads a text document hosted on any popular platform of your choice (like github), which contains
-a list of hashes of all valid user tokens.
+a list of all active user token hashes.
 
 SDRM calculates the hash for the token the client supplies, and then compares the calculated hash to the hashes in the text document.
 
@@ -119,21 +136,26 @@ the entire document has been read through.
 
 **Disclaimers**
 
-ServerlessDRM is a fantastic solution for any small to mid-range softwares, with a relatively small amount of active tokens.
+ServerlessDRM is a fantastic solution for any small to mid-range products.
 However, due to its nature there are a few important considerations to make before deciding to use ServerlessDRM in your product.
    
-1. ServerlessDRM will not let you track token utilization.
+>ServerlessDRM will not let you track token utilization.
+
 Because ServerlessDRM only verifies the authenticity of a token on the client side, and has no central server to report to, there
 is no way to track the frequency and amount of clients making use of any particular token.
 
-2. ServerlessDRM will scale relatively poorly with large sets of tokens.
+>ServerlessDRM will scale relatively poorly with large sets of tokens.
+
 ServerlessDRM operates in O(n) time, which means that if the number of tokens increases tenfold then so will the average time it takes to validate a token.
 Due to this, the delay to validate a token may rise to unnacceptable levels if the amount of active tokens passes a certain amount. The recommended upper limit for tokens is between 10k and 100k to maintain sub-100ms delays, depending on the expected client hardware.
 
-3. ServerlessDRM is not designed for extreme low-latency or large-scale products.
-ServerlessDRM was designed with affordability and low overhead in mind - not for maximum performance. 
+>ServerlessDRM is not designed for extreme low-latency products.
+
+ServerlessDRM was designed with affordability and accessibility in mind - not for maximum performance. 
 While there is a serious effort made to produce satisfying performance, some products have demands that SDRM simply cannot meet.
 
+> DRM tools are always susceptible to tampering.
 
+ServerlessDRM and any other DRM tool can be avoided by an experienced developer. Luckily, the unique serverless design of ServerlessDRM does not increase the attack surface by any significant amount (it actually reduces it), which means that it is just as robust as traditional DRM tools when it comes to avoiding being exploited. 
 
 
