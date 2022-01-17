@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class SetKeyScraper extends KeyScraper {
+public class GreedyKeyScraper extends KeyScraper {
 
     @Override
     public Future<Boolean> containsKey(final String targetURL, final String key) {
