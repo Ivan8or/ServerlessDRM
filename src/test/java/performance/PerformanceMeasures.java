@@ -1,9 +1,9 @@
 package performance;
 
 import online.umbcraft.hash.HashHelper;
-import online.umbcraft.web.GreedyKeyScraper;
-import online.umbcraft.web.KeyScraper;
-import online.umbcraft.web.StreamedKeyScraper;
+import online.umbcraft.web.GreedyHashParser;
+import online.umbcraft.web.HashParser;
+import online.umbcraft.web.StreamedHashParser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -15,8 +15,8 @@ public class PerformanceMeasures {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
 
-        KeyScraper v3scraper = new GreedyKeyScraper();
-        KeyScraper v4scraper = new StreamedKeyScraper();
+        HashParser v3scraper = new GreedyHashParser();
+        HashParser v4scraper = new StreamedHashParser();
 
 
         String[] sizes = {"1k", "10k", "100k", "500k", "1000k"};
@@ -54,7 +54,7 @@ public class PerformanceMeasures {
         }
 
 
-        KeyScraper.getExecutorService().shutdown();
+        HashParser.getExecutorService().shutdown();
     }
 
     private static void stats(long[] trials, String label) {
@@ -63,7 +63,7 @@ public class PerformanceMeasures {
         System.out.println(label+" average: " + average1+"ms");
     }
 
-    private static long[] trials(KeyScraper scraper, String url, int index, int num)
+    private static long[] trials(HashParser scraper, String url, int index, int num)
             throws MalformedURLException, ExecutionException, InterruptedException {
 
         String keyhash = HashHelper.getHash(index+"");
