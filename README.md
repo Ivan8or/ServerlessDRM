@@ -1,16 +1,16 @@
 # ServerlessDRM
-A simple, mid-scale DRM solution
+## A simple, mid-scale DRM solution.
 
 Eager to ensure your software is limited to its intended users?
 
 Don't want to spend time and resources on running a dedicated verification server?
 
-Welcome, Serverless DRM!
+Welcome to, Serverless DRM!
 
 
 This library allows developers to fully offload the heavy lifting of traditional DRM solutions to the client! 
 
-Reliant only on a public registrar to store encrypted keys (such as github), ServerlessDRM will ensure that clients
+Reliant only on a public document platform to store token hashes (such as github), ServerlessDRM will ensure that clients
 must have a valid user token in order to pass validation.
 
 
@@ -42,13 +42,13 @@ Measurements were taken on the following hardware:
  - a ryzen 5950x processor (Zen 3, released 2020) 
  - an intel x5670 processor (Westmere, released 2010)
  
-Two algorithms were measured; Greedy and Streamed -
+Two token parsing algorithms are measured; Greedy and Streamed -
 
 Greedy involves ingesting the entire set of hashed tokens from the document into a hashset,
 then checking if the set contains the specified token.
 
 Streamed involves stepping through the hashed tokens in the document as a stream, and comparing each
-next hashed token to the specified token. This allows for an early escape if the tokens matched up before
+next hashed token to the specified token. This allows for an early escape if a matching token is found before
 the entire document has been read through. 
 
 
@@ -119,15 +119,20 @@ the entire document has been read through.
 
 **Disclaimers**
 
-ServerlessDRM is a fantastic solution for any small to mid-range softwares, with a relatively small amount of active tokens
+ServerlessDRM is a fantastic solution for any small to mid-range softwares, with a relatively small amount of active tokens.
 However, due to its nature there are a few important considerations to make before deciding to use ServerlessDRM in your product.
    
-1. ServerlessDRM will not let you track token usage.
+1. ServerlessDRM will not let you track token utilization.
 Because ServerlessDRM only verifies the authenticity of a token on the client side, and has no central server to report to, there
 is no way to track the frequency and amount of clients making use of any particular token.
 
 2. ServerlessDRM will scale relatively poorly with large sets of tokens.
-tbd
+ServerlessDRM operates in O(n) time, which means that if the number of tokens increases tenfold then so will the average time it takes to validate a token.
+Due to this, the delay to validate a token may rise to unnacceptable levels if the amount of active tokens passes a certain amount. The recommended upper limit for tokens is between 10k and 100k to maintain sub-100ms delays, depending on the expected client hardware.
+
+3. ServerlessDRM is not designed for extreme low-latency or large-scale products.
+ServerlessDRM was designed with affordability and low overhead in mind - not for maximum performance. 
+While there is a serious effort made to produce satisfying performance, some products have demands that SDRM simply cannot meet.
 
 
 
