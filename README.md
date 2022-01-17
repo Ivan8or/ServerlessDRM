@@ -1,5 +1,5 @@
 # ServerlessDRM
-## A simple, mid-scale DRM solution.
+## An accessible, mid-scale DRM solution.
 
 Eager to ensure your software is limited to its intended users?
 
