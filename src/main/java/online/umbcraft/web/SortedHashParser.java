@@ -7,11 +7,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
-public class SortedKeyScraper extends KeyScraper {
+public class SortedHashParser extends HashParser {
 
     @Override
     public Future<Boolean> containsKey(final String targetURL, final String key) {

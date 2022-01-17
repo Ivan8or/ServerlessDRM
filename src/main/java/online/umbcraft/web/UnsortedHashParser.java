@@ -6,11 +6,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
-public class StreamedKeyScraper extends KeyScraper {
+public class UnsortedHashParser extends HashParser {
 
     @Override
     public Future<Boolean> containsKey(final String targetURL, final String key) {
@@ -27,7 +25,14 @@ public class StreamedKeyScraper extends KeyScraper {
                     if(!line.equals("----------BEGIN KEYS----------")) {
                         throw new MalformedURLException("Invalid Document at URL: " + targetURL);
                     }
-                    boolean matched = reader.lines().anyMatch(i -> i.equals(key));
+                    boolean matched = false;
+                    Object[] allTokens = reader.lines().toArray();
+                    for(Object token: allTokens) {
+                        if(key.equals(token)) {
+                            matched = true;
+                            break;
+                        }
+                    }
                     reader.close();
                     isr.close();
                     is.close();
